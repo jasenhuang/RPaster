@@ -14,6 +14,20 @@
 
 + (RBundlePaster*)sharedInstance;
 
-- (void)loadPatchBundle:(void(^)(void))completion;
+
+/**
+ *  Load all bundles from file
+ */
+- (void)loadPatchBundleFromFile;
+
+/**
+ * Add specific bundle after download
+ */
+- (void)addBundleWithPath:(NSURL*)fileURL;
+
+/**
+ * Bundle Directory
+ */
++ (NSString*)bundlePath;
 
 @end

@@ -27,7 +27,7 @@ static NSRegularExpression *Regex;
     return instance;
 }
 
-- (void)loadPatchBundle:(void(^)(void))completion
+- (void)loadPatchBundleFromFile
 {
     NSURL* path = [NSURL URLWithString:[RBundlePaster bundlePath]];
     NSArray<NSString *> *resourceKeys = @[NSURLNameKey, NSURLIsDirectoryKey, NSURLContentModificationDateKey];
@@ -63,16 +63,39 @@ static NSRegularExpression *Regex;
         return [RBundlePaster compareVersion:obj1.version another:obj2.version];
     }];
     self.bundleItems = bundleItems;
-    if (completion) completion();
 }
 
+- (void)addBundleWithPath:(NSURL*)fileURL
+{
+    NSArray<NSTextCheckingResult*>* items = [Regex matchesInString:fileURL.lastPathComponent
+                                                           options:0
+                                                             range:NSMakeRange(0, [fileURL.lastPathComponent length])];
+    if (!items.count) {
+        NSLog(@"Invalid Patch Bundle");
+        return ;
+    }
+    RBundleItem *bundleItem = [[RBundleItem alloc] init];
+    bundleItem.name = fileURL.lastPathComponent;
+    bundleItem.version = [bundleItem.name substringToIndex:bundleItem.name.length - 7];
+    [[NSFileManager defaultManager] attributesOfItemAtPath:fileURL.path error:nil];
+    bundleItem.modifiedTime = [[NSDate date] timeIntervalSince1970];
+    bundleItem.bundle = [RPatchBundle bundleWithURL:fileURL];
+    
+    NSMutableArray* bundleItems = [NSMutableArray arrayWithArray:self.bundleItems];
+    [bundleItems addObject:bundleItem];
+    
+    [bundleItems sortUsingComparator:^NSComparisonResult(RBundleItem*  _Nonnull obj1, RBundleItem*  _Nonnull obj2) {
+        return [RBundlePaster compareVersion:obj1.version another:obj2.version];
+    }];
+    self.bundleItems = bundleItems;
+}
+
+#pragma mark - util
 + (NSString*)bundlePath
 {
     NSString *doc = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
     return [NSString stringWithFormat:@"%@/RPaster", doc];
 }
-
-#pragma mark - util
 
 + (NSComparisonResult)compareVersion:(NSString*)one another:(NSString*)another
 {
