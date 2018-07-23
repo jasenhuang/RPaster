@@ -7,7 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		554FB468210454BD0047C784 /* RBundlePaster.h in Headers */ = {isa = PBXBuildFile; fileRef = 554FB466210454BD0047C784 /* RBundlePaster.h */; };
+		550D18CF21058D5E00959F5B /* RBundleDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = 550D18CD21058D5E00959F5B /* RBundleDownloader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		550D18D021058D5E00959F5B /* RBundleDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 550D18CE21058D5E00959F5B /* RBundleDownloader.m */; };
+		550D18D52105BA7200959F5B /* RBundleItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 550D18D32105BA7200959F5B /* RBundleItem.h */; };
+		550D18D62105BA7200959F5B /* RBundleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 550D18D42105BA7200959F5B /* RBundleItem.m */; };
+		550D18D92105BAAF00959F5B /* NSBundle+Paster.h in Headers */ = {isa = PBXBuildFile; fileRef = 550D18D72105BAAF00959F5B /* NSBundle+Paster.h */; };
+		550D18E02105D56000959F5B /* NSBundle+Paster.m in Sources */ = {isa = PBXBuildFile; fileRef = 550D18DF2105D55F00959F5B /* NSBundle+Paster.m */; };
+		554FB468210454BD0047C784 /* RBundlePaster.h in Headers */ = {isa = PBXBuildFile; fileRef = 554FB466210454BD0047C784 /* RBundlePaster.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		554FB469210454BD0047C784 /* RBundlePaster.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB467210454BD0047C784 /* RBundlePaster.m */; };
 		55B53447210432F6002FF1DA /* RPaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B5343D210432F6002FF1DA /* RPaster.framework */; };
 		55B5344C210432F6002FF1DA /* RPasterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B5344B210432F6002FF1DA /* RPasterTests.m */; };
@@ -25,6 +31,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		550D18CD21058D5E00959F5B /* RBundleDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RBundleDownloader.h; sourceTree = "<group>"; };
+		550D18CE21058D5E00959F5B /* RBundleDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RBundleDownloader.m; sourceTree = "<group>"; };
+		550D18D32105BA7200959F5B /* RBundleItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RBundleItem.h; sourceTree = "<group>"; };
+		550D18D42105BA7200959F5B /* RBundleItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RBundleItem.m; sourceTree = "<group>"; };
+		550D18D72105BAAF00959F5B /* NSBundle+Paster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Paster.h"; sourceTree = "<group>"; };
+		550D18DF2105D55F00959F5B /* NSBundle+Paster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Paster.m"; sourceTree = "<group>"; };
 		554FB466210454BD0047C784 /* RBundlePaster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RBundlePaster.h; sourceTree = "<group>"; };
 		554FB467210454BD0047C784 /* RBundlePaster.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RBundlePaster.m; sourceTree = "<group>"; };
 		55B5343D210432F6002FF1DA /* RPaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RPaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,8 +89,14 @@
 			children = (
 				55B53440210432F6002FF1DA /* RPaster.h */,
 				55B53441210432F6002FF1DA /* Info.plist */,
+				550D18D32105BA7200959F5B /* RBundleItem.h */,
+				550D18D42105BA7200959F5B /* RBundleItem.m */,
 				554FB466210454BD0047C784 /* RBundlePaster.h */,
 				554FB467210454BD0047C784 /* RBundlePaster.m */,
+				550D18CD21058D5E00959F5B /* RBundleDownloader.h */,
+				550D18CE21058D5E00959F5B /* RBundleDownloader.m */,
+				550D18D72105BAAF00959F5B /* NSBundle+Paster.h */,
+				550D18DF2105D55F00959F5B /* NSBundle+Paster.m */,
 			);
 			path = RPaster;
 			sourceTree = "<group>";
@@ -100,7 +118,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				554FB468210454BD0047C784 /* RBundlePaster.h in Headers */,
+				550D18CF21058D5E00959F5B /* RBundleDownloader.h in Headers */,
 				55B5344E210432F6002FF1DA /* RPaster.h in Headers */,
+				550D18D92105BAAF00959F5B /* NSBundle+Paster.h in Headers */,
+				550D18D52105BA7200959F5B /* RBundleItem.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,7 +170,7 @@
 		55B53434210432F6002FF1DA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = jasenhuang;
 				TargetAttributes = {
 					55B5343C210432F6002FF1DA = {
@@ -202,7 +223,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				550D18D62105BA7200959F5B /* RBundleItem.m in Sources */,
+				550D18E02105D56000959F5B /* NSBundle+Paster.m in Sources */,
 				554FB469210454BD0047C784 /* RBundlePaster.m in Sources */,
+				550D18D021058D5E00959F5B /* RBundleDownloader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +263,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -246,6 +271,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -297,6 +323,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -304,6 +331,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

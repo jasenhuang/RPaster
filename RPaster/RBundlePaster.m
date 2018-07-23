@@ -7,81 +7,98 @@
 //
 
 #import "RBundlePaster.h"
-#import <objc/runtime.h>
+#import "RBundleItem.h"
 
-void swizzleClassMethod(Class cls, SEL origSelector, SEL newSelector)
-{
-    if (!cls) return;
-    Method originalMethod = class_getClassMethod(cls, origSelector);
-    Method swizzledMethod = class_getClassMethod(cls, newSelector);
-    
-    Class metacls = objc_getMetaClass(NSStringFromClass(cls).UTF8String);
-    if (class_addMethod(metacls,
-                        origSelector,
-                        method_getImplementation(swizzledMethod),
-                        method_getTypeEncoding(swizzledMethod)) ) {
-        /* swizzing super class method, added if not exist */
-        class_replaceMethod(metacls,
-                            newSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-        
-    } else {
-        /* swizzleMethod maybe belong to super */
-        class_replaceMethod(metacls,
-                            newSelector,
-                            class_replaceMethod(metacls,
-                                                origSelector,
-                                                method_getImplementation(swizzledMethod),
-                                                method_getTypeEncoding(swizzledMethod)),
-                            method_getTypeEncoding(originalMethod));
-    }
-}
+static NSRegularExpression *Regex;
 
-void swizzleInstanceMethod(Class cls, SEL origSelector, SEL newSelector)
-{
-    if (!cls) {
-        return;
-    }
-    /* if current class not exist selector, then get super*/
-    Method originalMethod = class_getInstanceMethod(cls, origSelector);
-    Method swizzledMethod = class_getInstanceMethod(cls, newSelector);
-    
-    /* add selector if not exist, implement append with method */
-    if (class_addMethod(cls,
-                        origSelector,
-                        method_getImplementation(swizzledMethod),
-                        method_getTypeEncoding(swizzledMethod)) ) {
-        /* replace class instance method, added if selector not exist */
-        /* for class cluster , it always add new selector here */
-        class_replaceMethod(cls,
-                            newSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-        
-    } else {
-        /* swizzleMethod maybe belong to super */
-        class_replaceMethod(cls,
-                            newSelector,
-                            class_replaceMethod(cls,
-                                                origSelector,
-                                                method_getImplementation(swizzledMethod),
-                                                method_getTypeEncoding(swizzledMethod)),
-                            method_getTypeEncoding(originalMethod));
-    }
-}
-
-@interface NSBundle (Paster)
-+ (void)load
-{
-    
-}
-@end
-
-@implementation NSBundle (Paster)
-
+@interface RBundlePaster()
+@property(nonatomic, strong, readwrite) NSArray<RBundleItem*> *bundleItems;
 @end
 
 @implementation RBundlePaster
++ (RBundlePaster*)sharedInstance
+{
+    static RBundlePaster *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [RBundlePaster new];
+        Regex = [NSRegularExpression regularExpressionWithPattern:@"^(\\d+(\\.\\d+){0,3}).bundle" options:0 error:nil];
+    });
+    return instance;
+}
+
+- (void)loadPatchBundle:(void(^)(void))completion
+{
+    NSURL* path = [NSURL URLWithString:[RBundlePaster bundlePath]];
+    NSArray<NSString *> *resourceKeys = @[NSURLNameKey, NSURLIsDirectoryKey, NSURLContentModificationDateKey];
+    NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtURL:path
+                                                             includingPropertiesForKeys:nil
+                                                                                options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                                           errorHandler:nil];
+    NSError *error;
+    RBundleItem* bundleItem;
+    NSMutableArray* bundleItems = [NSMutableArray array];
+    for (NSURL *fileURL in enumerator){
+        NSDictionary<NSString *, id> *values = [fileURL resourceValuesForKeys:resourceKeys error:&error];
+        
+        // Skip non directories and errors.
+        if (error || !values || ![values[NSURLIsDirectoryKey] boolValue]) {
+            continue;
+        }
+        NSArray<NSTextCheckingResult*>* items = [Regex matchesInString:values[NSURLNameKey]
+                                        options:0
+                                          range:NSMakeRange(0, [values[NSURLNameKey] length])];
+        if (!items.count) continue;
+        
+        NSLog(@"Loading Patch Bundle: %@", values[NSURLNameKey]);
+        
+        bundleItem = [[RBundleItem alloc] init];
+        bundleItem.name = values[NSURLNameKey];
+        bundleItem.version = [bundleItem.name substringToIndex:bundleItem.name.length - 7];
+        bundleItem.modifiedTime = [values[NSURLContentModificationDateKey] timeIntervalSince1970];
+        bundleItem.bundle = [RPatchBundle bundleWithURL:fileURL];
+        [bundleItems addObject:bundleItem];
+    }
+    [bundleItems sortUsingComparator:^NSComparisonResult(RBundleItem*  _Nonnull obj1, RBundleItem*  _Nonnull obj2) {
+        return [RBundlePaster compareVersion:obj1.version another:obj2.version];
+    }];
+    self.bundleItems = bundleItems;
+    if (completion) completion();
+}
+
++ (NSString*)bundlePath
+{
+    NSString *doc = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    return [NSString stringWithFormat:@"%@/RPaster", doc];
+}
+
+#pragma mark - util
+
++ (NSComparisonResult)compareVersion:(NSString*)one another:(NSString*)another
+{
+    NSArray *version1 = [one componentsSeparatedByString:@"."];
+    NSArray *version2 = [another componentsSeparatedByString:@"."];
+    for(NSInteger i = 0 ; i < version1.count || i < version2.count; ++ i){
+        NSInteger value1 = 0;
+        NSInteger value2 = 0;
+        if(i < version1.count){
+            value1 = [version1[i] integerValue];
+        }
+        if(i < version2.count){
+            value2 = [version2[i] integerValue];
+        }
+        if(value1  == value2){
+            continue;
+        }else{
+            if(value1 > value2){
+                return NSOrderedDescending;
+            }else{
+                return NSOrderedAscending;
+            }
+        }
+    }
+    return NSOrderedSame;
+}
+
 
 @end

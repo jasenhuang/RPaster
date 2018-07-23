@@ -7,7 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+@class RBundleItem;
 
 @interface RBundlePaster : NSObject
+@property(nonatomic, strong, readonly) NSArray<RBundleItem*> *bundleItems;
+
++ (RBundlePaster*)sharedInstance;
+
+- (void)loadPatchBundle:(void(^)(void))completion;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import <RPaster/RPaster.h>
 
 @interface ViewController ()
 
@@ -17,6 +18,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    [[RBundlePaster sharedInstance] loadPatchBundle:^{
+        NSURL* url = [[NSBundle mainBundle] URLForResource:@"a" withExtension:@"js"];
+        NSLog(@"content = %@", [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil]);
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 50, 50)];
+        [self.view addSubview:imageView];
+        imageView.image = [UIImage imageNamed:@"icon2"];
+    }];
 }
 
 
