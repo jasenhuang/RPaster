@@ -8,12 +8,13 @@
 
 #import <Foundation/Foundation.h>
 @class RBundleItem;
+@class RBundleDownloader;
 
 @interface RBundlePaster : NSObject
 @property(nonatomic, strong, readonly) NSArray<RBundleItem*> *bundleItems;
+@property(nonatomic, strong, readonly) RBundleDownloader *downloader;
 
 + (RBundlePaster*)sharedInstance;
-
 
 /**
  *  Load all bundles from file

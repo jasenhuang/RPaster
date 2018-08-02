@@ -8,11 +8,13 @@
 
 #import "RBundlePaster.h"
 #import "RBundleItem.h"
+#import "RBundleDownloader.h"
 
 static NSRegularExpression *Regex;
 
 @interface RBundlePaster()
 @property(nonatomic, strong, readwrite) NSArray<RBundleItem*> *bundleItems;
+@property(nonatomic, strong, readwrite) RBundleDownloader *downloader;
 @end
 
 @implementation RBundlePaster

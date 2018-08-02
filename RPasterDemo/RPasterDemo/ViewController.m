@@ -18,13 +18,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [[RBundlePaster sharedInstance] loadPatchBundleFromFile];
+    UIImageView* icon2 = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 50, 50)];
+    icon2.image = [UIImage imageNamed:@"icon2"];
+    [self.view addSubview:icon2];
     
-    NSURL* url = [[NSBundle mainBundle] URLForResource:@"a" withExtension:@"js"];
-    NSLog(@"content = %@", [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil]);
-    UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 50, 50)];
-    imageView.image = [UIImage imageNamed:@"icon2"];
-    [self.view addSubview:imageView];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[RBundlePaster sharedInstance] loadPatchBundleFromFile];
+        NSURL* url = [[NSBundle mainBundle] URLForResource:@"a" withExtension:@"js"];
+        NSLog(@"content = %@", [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil]);
+        UIImageView* icon = [[UIImageView alloc] initWithFrame:CGRectMake(100, 200, 50, 50)];
+        icon.image = [UIImage imageNamed:@"icon1"];
+        [self.view addSubview:icon];
+    });
 }
 
 

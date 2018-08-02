@@ -14,15 +14,7 @@
 @end
 
 @implementation RBundleDownloader
-+ (RBundleDownloader*)sharedInstance
-{
-    static RBundleDownloader* instance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        instance = [RBundleDownloader new];
-    });
-    return instance;
-}
+
 - (instancetype)init
 {
     self = [super init];
@@ -45,6 +37,9 @@
                                                                    [RBundlePaster bundlePath],
                                                                    location.lastPathComponent
                                                                    ]];
+                                                 if ([[NSFileManager defaultManager] fileExistsAtPath:target.path]){
+                                                     [[NSFileManager defaultManager] removeItemAtPath:target.path error:nil];
+                                                 }
                                                  [[NSFileManager defaultManager] moveItemAtURL:location
                                                                                          toURL:target error:nil];
                                                  if ([[NSFileManager defaultManager] fileExistsAtPath:target.path]){

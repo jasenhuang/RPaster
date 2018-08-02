@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		550D18CF21058D5E00959F5B /* RBundleDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = 550D18CD21058D5E00959F5B /* RBundleDownloader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		550D18D021058D5E00959F5B /* RBundleDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 550D18CE21058D5E00959F5B /* RBundleDownloader.m */; };
-		550D18D52105BA7200959F5B /* RBundleItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 550D18D32105BA7200959F5B /* RBundleItem.h */; };
+		550D18D52105BA7200959F5B /* RBundleItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 550D18D32105BA7200959F5B /* RBundleItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		550D18D62105BA7200959F5B /* RBundleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 550D18D42105BA7200959F5B /* RBundleItem.m */; };
 		550D18D92105BAAF00959F5B /* NSBundle+Paster.h in Headers */ = {isa = PBXBuildFile; fileRef = 550D18D72105BAAF00959F5B /* NSBundle+Paster.h */; };
 		550D18E02105D56000959F5B /* NSBundle+Paster.m in Sources */ = {isa = PBXBuildFile; fileRef = 550D18DF2105D55F00959F5B /* NSBundle+Paster.m */; };
@@ -120,8 +120,8 @@
 				554FB468210454BD0047C784 /* RBundlePaster.h in Headers */,
 				550D18CF21058D5E00959F5B /* RBundleDownloader.h in Headers */,
 				55B5344E210432F6002FF1DA /* RPaster.h in Headers */,
-				550D18D92105BAAF00959F5B /* NSBundle+Paster.h in Headers */,
 				550D18D52105BA7200959F5B /* RBundleItem.h in Headers */,
+				550D18D92105BAAF00959F5B /* NSBundle+Paster.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

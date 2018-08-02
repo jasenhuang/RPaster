@@ -78,7 +78,6 @@ void swizzleInstanceMethod(Class cls, SEL origSelector, SEL newSelector)
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        //swizzleInstanceMethod([NSBundle class], @selector(URLForResource:withExtension:), @selector(hookURLForResource:withExtension:));
         swizzleInstanceMethod([NSBundle class], @selector(URLForResource:withExtension:subdirectory:), @selector(hookURLForResource:withExtension:subdirectory:));
         swizzleInstanceMethod([NSBundle class], @selector(URLForResource:withExtension:subdirectory:localization:), @selector(hookURLForResource:withExtension:subdirectory:localization:));
         
@@ -87,27 +86,16 @@ void swizzleInstanceMethod(Class cls, SEL origSelector, SEL newSelector)
     });
 }
 
-- (NSURL*)hookURLForResource:(NSString *)name withExtension:(NSString *)ext
-{
-    NSURL* URL;
-    if (![self isKindOfClass:[RPatchBundle class]]) {
-        for (RBundleItem* item in [RBundlePaster sharedInstance].bundleItems.reverseObjectEnumerator.allObjects) {
-            URL = [item.bundle URLForResource:name withExtension:ext];
-            if (URL) break;
-        }
-    }
-    if (!URL) URL = [self hookURLForResource:name withExtension:ext];
-    return URL;
-}
-
 - (NSURL*)hookURLForResource:(NSString *)name withExtension:(NSString *)ext subdirectory:(NSString *)subpath
 {
     NSURL* URL;
-    if (![self isKindOfClass:[RPatchBundle class]]) {
-        for (RBundleItem* item in [RBundlePaster sharedInstance].bundleItems.reverseObjectEnumerator.allObjects) {
-            URL = [item.bundle URLForResource:name withExtension:ext subdirectory:subpath];
-            if (URL)break;
-        }
+    if ([name isEqualToString:@"Assets"] && [ext isEqualToString:@"car"]){
+        URL = [self hookURLForResource:name withExtension:ext subdirectory:subpath];
+        return URL;
+    }
+    for (RBundleItem* item in [RBundlePaster sharedInstance].bundleItems.reverseObjectEnumerator.allObjects) {
+        URL = [item.bundle hookURLForResource:name withExtension:ext subdirectory:subpath];
+        if (URL) break;
     }
     if (!URL) URL = [self hookURLForResource:name withExtension:ext subdirectory:subpath];
     return URL;
@@ -116,11 +104,13 @@ void swizzleInstanceMethod(Class cls, SEL origSelector, SEL newSelector)
 - (NSURL*)hookURLForResource:(NSString *)name withExtension:(NSString *)ext subdirectory:(NSString *)subpath localization:(NSString *)localizationName
 {
     NSURL* URL;
-    if (![self isKindOfClass:[RPatchBundle class]]) {
-        for (RBundleItem* item in [RBundlePaster sharedInstance].bundleItems.reverseObjectEnumerator.allObjects) {
-            URL = [item.bundle URLForResource:name withExtension:ext subdirectory:subpath localization:localizationName];
-            if (URL)break;
-        }
+    if ([name isEqualToString:@"Assets"] && [ext isEqualToString:@"car"]){
+        URL = [self hookURLForResource:name withExtension:ext subdirectory:subpath localization:localizationName];
+        return URL;
+    }
+    for (RBundleItem* item in [RBundlePaster sharedInstance].bundleItems.reverseObjectEnumerator.allObjects) {
+        URL = [item.bundle hookURLForResource:name withExtension:ext subdirectory:subpath localization:localizationName];
+        if (URL) break;
     }
     if (!URL) URL = [self hookURLForResource:name withExtension:ext subdirectory:subpath localization:localizationName];
     return URL;
@@ -128,28 +118,48 @@ void swizzleInstanceMethod(Class cls, SEL origSelector, SEL newSelector)
 
 - (NSArray<NSURL*>*)hookURLsForResourcesWithExtension:(NSString *)ext subdirectory:(NSString *)subpath
 {
-    NSArray<NSURL*>* URLs;
-    if (![self isKindOfClass:[RPatchBundle class]]) {
-        for (RBundleItem* item in [RBundlePaster sharedInstance].bundleItems.reverseObjectEnumerator.allObjects) {
-            URLs = [item.bundle URLsForResourcesWithExtension:ext subdirectory:subpath];
-            if (URLs) break;
-        }
+    NSMutableArray<NSURL*>* URLs = [NSMutableArray array];
+    for (RBundleItem* item in [RBundlePaster sharedInstance].bundleItems.reverseObjectEnumerator.allObjects) {
+        NSArray<NSURL*>* bundleURLs = [item.bundle hookURLsForResourcesWithExtension:ext subdirectory:subpath];
+        [URLs addObjectsFromArray:bundleURLs];
     }
-    if (!URLs) URLs = [self URLsForResourcesWithExtension:ext subdirectory:subpath];
+    NSArray<NSURL*>* bundleURLs = [self hookURLsForResourcesWithExtension:ext subdirectory:subpath];
+    [URLs addObjectsFromArray:bundleURLs];
     return URLs;
 }
 
 - (NSArray<NSURL*>*)hookURLsForResourcesWithExtension:(NSString *)ext subdirectory:(NSString *)subpath localization:(NSString *)localizationName
 {
-    NSArray<NSURL*>* URLs;
-    if (![self isKindOfClass:[RPatchBundle class]]) {
-        for (RBundleItem* item in [RBundlePaster sharedInstance].bundleItems.reverseObjectEnumerator.allObjects) {
-            URLs = [item.bundle URLsForResourcesWithExtension:ext subdirectory:subpath localization:localizationName];
-            if (URLs) break;
-        }
+    NSMutableArray<NSURL*>* URLs = [NSMutableArray array];
+    for (RBundleItem* item in [RBundlePaster sharedInstance].bundleItems.reverseObjectEnumerator.allObjects) {
+        NSArray<NSURL*>* bundleURLs = [item.bundle hookURLsForResourcesWithExtension:ext subdirectory:subpath localization:localizationName];
+        [URLs addObjectsFromArray:bundleURLs];
     }
-    if (!URLs) URLs = [self URLsForResourcesWithExtension:ext subdirectory:subpath localization:localizationName];
+    NSArray<NSURL*>* bundleURLs = [self hookURLsForResourcesWithExtension:ext subdirectory:subpath localization:localizationName];
+    [URLs addObjectsFromArray:bundleURLs];
     return URLs;
+}
+
+@end
+
+@implementation UIImage (Paster)
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        swizzleClassMethod([UIImage class], @selector(imageNamed:inBundle:compatibleWithTraitCollection:), @selector(hookimageNamed:inBundle:compatibleWithTraitCollection:));
+    });
+}
+
++ (UIImage*)hookimageNamed:(NSString *)name inBundle:(NSBundle *)bundle compatibleWithTraitCollection:(UITraitCollection *)traitCollection
+{
+    UIImage* image;
+    for (RBundleItem* item in [RBundlePaster sharedInstance].bundleItems.reverseObjectEnumerator.allObjects) {
+        image = [self hookimageNamed:name inBundle:item.bundle compatibleWithTraitCollection:traitCollection];
+        if (image) break;
+    }
+    if (!image) image = [self hookimageNamed:name inBundle:bundle compatibleWithTraitCollection:traitCollection];
+    return image;
 }
 
 @end
