@@ -8,6 +8,7 @@
 
 #import "RBundleDownloader.h"
 #import "RBundlePaster.h"
+#import "RBundleUtils.h"
 
 @interface RBundleDownloader()
 @property(nonatomic, strong) NSURLSession* session;

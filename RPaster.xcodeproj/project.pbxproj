@@ -18,6 +18,8 @@
 		55B53447210432F6002FF1DA /* RPaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B5343D210432F6002FF1DA /* RPaster.framework */; };
 		55B5344C210432F6002FF1DA /* RPasterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B5344B210432F6002FF1DA /* RPasterTests.m */; };
 		55B5344E210432F6002FF1DA /* RPaster.h in Headers */ = {isa = PBXBuildFile; fileRef = 55B53440210432F6002FF1DA /* RPaster.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55DDC5C52126771F00BB8773 /* RBundleUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 55DDC5C32126771F00BB8773 /* RBundleUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55DDC5C62126771F00BB8773 /* RBundleUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 55DDC5C42126771F00BB8773 /* RBundleUtils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		55B53446210432F6002FF1DA /* RPasterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RPasterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B5344B210432F6002FF1DA /* RPasterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RPasterTests.m; sourceTree = "<group>"; };
 		55B5344D210432F6002FF1DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55DDC5C32126771F00BB8773 /* RBundleUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RBundleUtils.h; sourceTree = "<group>"; };
+		55DDC5C42126771F00BB8773 /* RBundleUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RBundleUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +99,8 @@
 				554FB467210454BD0047C784 /* RBundlePaster.m */,
 				550D18CD21058D5E00959F5B /* RBundleDownloader.h */,
 				550D18CE21058D5E00959F5B /* RBundleDownloader.m */,
+				55DDC5C32126771F00BB8773 /* RBundleUtils.h */,
+				55DDC5C42126771F00BB8773 /* RBundleUtils.m */,
 				550D18D72105BAAF00959F5B /* NSBundle+Paster.h */,
 				550D18DF2105D55F00959F5B /* NSBundle+Paster.m */,
 			);
@@ -121,6 +127,7 @@
 				550D18CF21058D5E00959F5B /* RBundleDownloader.h in Headers */,
 				55B5344E210432F6002FF1DA /* RPaster.h in Headers */,
 				550D18D52105BA7200959F5B /* RBundleItem.h in Headers */,
+				55DDC5C52126771F00BB8773 /* RBundleUtils.h in Headers */,
 				550D18D92105BAAF00959F5B /* NSBundle+Paster.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -223,6 +230,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55DDC5C62126771F00BB8773 /* RBundleUtils.m in Sources */,
 				550D18D62105BA7200959F5B /* RBundleItem.m in Sources */,
 				550D18E02105D56000959F5B /* NSBundle+Paster.m in Sources */,
 				554FB469210454BD0047C784 /* RBundlePaster.m in Sources */,
