@@ -12,6 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RBundleUtils : NSObject
 
++ (NSString*) RBString_MD5:(NSString*)str;
++ (NSString*) RBString_SHA1:(NSString*)str;
+
++ (NSString*) RBData_MD5:(NSData*)data;
++ (NSString*) RBData_SHA1:(NSData*)data;
+
 @end
 
 NS_ASSUME_NONNULL_END

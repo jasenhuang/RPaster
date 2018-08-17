@@ -28,7 +28,7 @@ result[16], result[17], result[18], result[19]]                         \
 
 @implementation RBundleUtils
 
-- (NSString*) RBString_MD5:(NSString*)str
++ (NSString*) RBString_MD5:(NSString*)str
 {
     const char *cStr = [str UTF8String];
     unsigned char result[16];
@@ -43,7 +43,7 @@ result[16], result[17], result[18], result[19]]                         \
     return MD5_CHAR_TO_STRING_20;
 }
 
-- (NSString*) RBData_MD5:(NSData*)data
++ (NSString*) RBData_MD5:(NSData*)data
 {
     unsigned char result[16];
     CC_MD5(data.bytes, (CC_LONG)data.length, result);
